@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Novo PDI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Plano de Desenvolvimento Individual - PDI</h1>
+    <div class="container">
+        <h2>Criar Novo PDI</h2>
+        <form id="pdi-form">
+            <label for="aluno">Aluno(a):</label>
+            <input type="text" id="aluno" placeholder="Nome" required>
+
+            <label for="meta">Meta:</label>
+            <input type="text" id="meta" placeholder="Sua meta" required>
+
+            <label for="objetivos">Objetivos:</label>
+            <input type="text" id="objetivos" placeholder="Seu objetivo" required>
+
+            <label for="inicio">Início:</label>
+            <input type="date" id="inicio" required>
+
+            <label for="fim">Fim:</label>
+            <input type="date" id="fim" required>
+
+            <button type="submit">Adicionar PDI</button>
+        </form>
+
+        <a href="lista.html" class="view-list">Ver PDIs cadastrados</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

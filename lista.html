@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de PDIs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Lista de PDIs</h2>
+        <div id="pdi-list"></div>
+        <a href="index.html" class="back-button">Voltar</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let pdiList = JSON.parse(localStorage.getItem("pdilist")) || [];
+            let pdiContainer = document.getElementById("pdi-list");
+
+            if (pdiList.length === 0) {
+                pdiContainer.innerHTML = "<p>Nenhum PDI cadastrado.</p>";
+                return;
+            }
+
+            pdiList.forEach((pdi, index) => {
+                let pdiDiv = document.createElement("div");
+                pdiDiv.classList.add("pdi-item");
+                pdiDiv.innerHTML = `
+                    <strong>Aluno(a):</strong> ${pdi.aluno} <br>
+                    <strong>Meta:</strong> ${pdi.meta} <br>
+                    <strong>Objetivos:</strong> ${pdi.objetivos} <br>
+                    <strong>Prazo:</strong> ${pdi.inicio} - ${pdi.fim} <br>
+                    <progress value="${pdi.progresso}" max="100"></progress> ${pdi.progresso}% Concluído <br>
+                    <button onclick="editarPDI(${index})">Editar</button>
+                    <button onclick="excluirPDI(${index})">Excluir</button>
+                    <button onclick="concluirAtividade(${index})">Concluir Atividade</button>
+                `;
+                pdiContainer.appendChild(pdiDiv);
+            });
+        });
+
+        function editarPDI(index) {
+            let pdiList = JSON.parse(localStorage.getItem("pdilist")) || [];
+            let pdi = pdiList[index];
+
+            // Preencher os campos do formulário com os dados do PDI selecionado
+            document.getElementById("aluno").value = pdi.aluno;
+            document.getElementById("meta").value = pdi.meta;
+            document.getElementById("objetivos").value = pdi.objetivos;
+            document.getElementById("inicio").value = pdi.inicio;
+            document.getElementById("fim").value = pdi.fim;
+
+            // Modificar o evento do formulário para atualizar o PDI ao invés de criar um novo
+            document.getElementById("pdi-form").addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                let aluno = document.getElementById("aluno").value;
+                let meta = document.getElementById("meta").value;
+                let objetivos = document.getElementById("objetivos").value;
+                let inicio = document.getElementById("inicio").value;
+                let fim = document.getElementById("fim").value;
+
+                pdiList[index] = { aluno, meta, objetivos, inicio, fim, progresso: pdi.progresso }; // Atualiza o PDI na lista
+
+                localStorage.setItem("pdilist", JSON.stringify(pdiList));
+
+                alert("PDI atualizado com sucesso!");
+                window.location.href = "lista.html"; // Volta para a lista
+            });
+        }
+
+        function excluirPDI(index) {
+            let pdiList = JSON.parse(localStorage.getItem("pdilist")) || [];
+            pdiList.splice(index, 1);
+            localStorage.setItem("pdilist", JSON.stringify(pdiList));
+            location.reload();
+        }
+
+        function concluirAtividade(index) {
+            let pdiList = JSON.parse(localStorage.getItem("pdilist")) || [];
+            pdiList[index].progresso = 100; // Define o progresso como 100% (atividade concluída)
+
+            localStorage.setItem("pdilist", JSON.stringify(pdiList));
+            alert("Atividade concluída!");
+            location.reload(); // Atualiza a página para refletir a mudança
+        }
+    </script>
+</body>
+</html>
